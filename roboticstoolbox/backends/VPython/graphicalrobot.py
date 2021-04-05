@@ -800,8 +800,15 @@ class GraphicalRobot:  # pragma nocover
             if joint_angles is None:
                 joint_angles = self.robot.q
             for a_idx in range(len(joint_angles)):
+                # 1:1 correspondence with number of STL
+                # objects to number of angles
+                if len(joint_angles) == len(self.angles):
+                    self.angles[a_idx] = joint_angles[a_idx]
                 # Ignore the base's angle (idx == 0)
-                self.angles[a_idx+1] = joint_angles[a_idx]
+                # with cases where base doesn't have an angle
+                # (but has an STL)
+                else:
+                    self.angles[a_idx+1] = joint_angles[a_idx]
             self.set_joint_poses(poses)
         # Else TODO
         else:
