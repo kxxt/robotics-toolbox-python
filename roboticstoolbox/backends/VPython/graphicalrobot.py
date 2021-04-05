@@ -48,7 +48,7 @@ class DefaultJoint:  # pragma nocover
                 structure, float) and not isinstance(structure, PurePath):
             error_str = "structure must be of type {0} or {1}. Given {2}. " \
                 "Either give a length (float)," \
-                "or meshdata [filepath, scale, origindata]"
+                "or filepath to STL"
             raise TypeError(error_str.format(float, str, type(structure)))
 
         self.qlim = qlim
