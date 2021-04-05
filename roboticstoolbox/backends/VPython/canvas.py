@@ -206,7 +206,14 @@ class GraphicsCanvas3D:  # pragma nocover
         # Add robot joint sliders
         i = 0
         for joint in robot.joints:
-            if joint.qlim[0] == joint.qlim[1]:
+            if joint.qlim is None:
+                string = "{:.2f} rad ({:.2f} deg)".format(
+                    joint.theta, degrees(joint.theta))
+                self.__teachpanel[self.__selected_robot][i] = [
+                    radians(-180), radians(180),
+                    joint.theta, wtext(text=string)]
+            # If joint limits are equal (effectively no rotation)
+            elif joint.qlim[0] == joint.qlim[1]:
                 self.__teachpanel[self.__selected_robot][i] = [
                     joint.qlim[0], joint.qlim[1],
                     joint.theta, None]
