@@ -923,7 +923,7 @@ class GraphicsCanvas2D:  # pragma nocover
         # Reset the camera to known spot
         self.__reset_camera()
         self.__graphics_grid.update_grid()
-        self.__graphics_grid.toggle_2d_3d()
+        self.__graphics_grid.set_mode(GridType.XY2D)
 
     #######################################
     #  Canvas Management
