@@ -16,12 +16,15 @@ from roboticstoolbox.backends.Connector import Connector
 _GraphicsCanvas3D = None
 _GraphicsCanvas2D = None
 _GraphicalRobot = None
+UImode = None
+GridType = None
 close_localhost_session = None
 
 try:
     from roboticstoolbox.backends.VPython.canvas import GraphicsCanvas2D, GraphicsCanvas3D, UImode
     from roboticstoolbox.backends.VPython.graphicalrobot import GraphicalRobot
     from roboticstoolbox.backends.VPython.grid import GridType
+    from roboticstoolbox.backends.VPython.common_functions import close_localhost_session
 except ImportError:
     print(
         '\nYou must install the VPython component of the toolbox, do: \n'
@@ -363,8 +366,12 @@ class VPython(Connector):  # pragma nocover
             raise ValueError(
                 "Figure number must be between 0 and total number of canvases")
 
+        # ElseIf GraphicalRobot given
+        if isinstance(id, GraphicalRobot):
+            if self.canvases[fig_num].is_robot_in(id):
+                self.canvases[fig_num].delete_robot(id)
         # If DHLink given
-        if isinstance(id, DHLink):
+        else:
             robot = None
             # Find first occurrence of it that is in the correct canvas
             for i in range(len(self.robots)):
@@ -376,13 +383,6 @@ class VPython(Connector):  # pragma nocover
                 return
             else:
                 self.canvases[fig_num].delete_robot(robot)
-        # ElseIf GraphicalRobot given
-        elif isinstance(id, GraphicalRobot):
-            if self.canvases[fig_num].is_robot_in(id):
-                self.canvases[fig_num].delete_robot(id)
-        # Else
-        else:
-            raise TypeError("Input must be a DHLink or GraphicalRobot")
 
     def hold(self):           # pragma: no cover
         '''
